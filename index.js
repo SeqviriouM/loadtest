@@ -6,7 +6,9 @@ const dotEnv = require('dotenv');
 const dotEnvPath = path.resolve(__dirname, '.env');
 dotEnv.config({path: dotEnvPath});
 
-const TEST_URL = process.env.REQUEST_URL;
+const REQUEST_URL = process.env.REQUEST_URL;
+const SLEEP_TIMEOUT = process.env.SLEEP_TIMEOUT || 1000;
+
 const envAxios = axios.create({
      timeout: 10 * 1000,
      httpsAgent: new https.Agent({
@@ -23,7 +25,7 @@ async function sendRequest() {
 			headers: {
 				cookie: process.env.COOKIE
 			},
-			url: TEST_URL,
+			url: REQUEST_URL,
 		});
 
 		console.log('SUCCESS');
@@ -34,7 +36,7 @@ async function sendRequest() {
 
 async function generatePayload() {
 	while (true) {
-		await sleep(1000);
+		await sleep(SLEEP_TIMEOUT);
 
 		sendRequest();
 	}
